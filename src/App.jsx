@@ -7,6 +7,7 @@ import ProductDetails from "./pages/Products/ProductDetails";
 import Cart from "./pages/Cart/Cart";
 import Checkout from "./pages/Checkout/Checkout";
 import CustomerDashboard from "./pages/Customer/CustomerDashboard";
+import Login from "./pages/Auth/Login";
 
 function App() {
   return (
@@ -16,7 +17,7 @@ function App() {
       <main className="min-h-screen">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<h1 className="p-6 text-3xl">Login Page</h1>} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<h1 className="p-6 text-3xl">Register Page</h1>} />
           <Route path="/products" element={<Products />} />
           <Route path="/products/:id" element={<ProductDetails />} />

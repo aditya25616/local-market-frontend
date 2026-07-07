@@ -1,17 +1,40 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../services/api";
-import { addToCart } from "../../services/cartService";
 
 function ProductDetails() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    api.get(`/products/${id}`)
+    api
+      .get(`/products/${id}`)
       .then((res) => setProduct(res.data))
       .catch((err) => console.log(err));
   }, [id]);
+
+  const handleAddToCart = async () => {
+    try {
+      const token = localStorage.getItem("token");
+
+      await api.post(
+        "/cart",
+        {
+          productId: product._id,
+          quantity: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      alert("Product added to cart");
+    } catch (error) {
+      alert(error.response?.data?.message || "Failed to add to cart");
+    }
+  };
 
   if (!product) {
     return <p className="p-10 text-xl">Loading product...</p>;
@@ -41,24 +64,14 @@ function ProductDetails() {
         <p className="text-gray-500">Vendor: {product.vendorName}</p>
 
         <button
-  onClick={handleAddToCart}
-  className="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700">
+          onClick={handleAddToCart}
+          className="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700"
+        >
           Add to Cart
         </button>
       </div>
     </div>
   );
-
-  const handleAddToCart = async () => {
-  try {
-    await addToCart(product._id);
-
-    alert("Product added to cart!");
-  } catch (error) {
-    alert("Please login first.");
-    console.log(error);
-  }
-};
 }
 
 export default ProductDetails;

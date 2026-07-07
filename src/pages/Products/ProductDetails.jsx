@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../../services/api";
+import { addToCart } from "../../services/cartService";
 
 function ProductDetails() {
   const { id } = useParams();
@@ -39,12 +40,25 @@ function ProductDetails() {
         <p className="text-gray-500">Location: {product.location}</p>
         <p className="text-gray-500">Vendor: {product.vendorName}</p>
 
-        <button className="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg">
+        <button
+  onClick={handleAddToCart}
+  className="mt-8 bg-green-600 text-white px-8 py-3 rounded-lg hover:bg-green-700">
           Add to Cart
         </button>
       </div>
     </div>
   );
+
+  const handleAddToCart = async () => {
+  try {
+    await addToCart(product._id);
+
+    alert("Product added to cart!");
+  } catch (error) {
+    alert("Please login first.");
+    console.log(error);
+  }
+};
 }
 
 export default ProductDetails;

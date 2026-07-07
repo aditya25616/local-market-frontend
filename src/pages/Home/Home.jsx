@@ -1,5 +1,6 @@
 import Hero from "./sections/Hero";
 import Categories from "./sections/Categories";
+import FeaturedProducts from "./sections/FeaturedProducts";
 import WhyChooseUs from "./sections/WhyChooseUs";
 
 function Home() {
@@ -7,6 +8,7 @@ function Home() {
     <>
       <Hero />
       <Categories />
+      <FeaturedProducts />
       <WhyChooseUs />
     </>
   );

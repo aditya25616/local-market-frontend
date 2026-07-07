@@ -32,8 +32,7 @@ function Hero() {
           <img
             src="https://images.unsplash.com/photo-1542838132-92c53300491e"
             alt="Local market"
-            className="rounded-2xl w-full h-[400px] object-cover"
-          />
+            className="rounded-2xl w-full h-96 object-cover"          />
         </div>
       </div>
     </section>

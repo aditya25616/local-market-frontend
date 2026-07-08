@@ -37,7 +37,6 @@ function AdminDashboard() {
 
   const deleteProduct = async (id) => {
     if (!confirm("Delete this product?")) return;
-
     await api.delete(`/products/${id}`, config);
     alert("Product deleted");
     fetchAll();
@@ -53,6 +52,21 @@ function AdminDashboard() {
     await api.put(`/admin/vendor/${id}`, {}, config);
     alert("User status updated");
     fetchAll();
+  };
+
+  const updateOrderStatus = async (orderId, status) => {
+    try {
+      await api.put(
+        `/orders/${orderId}/status`,
+        { status },
+        config
+      );
+
+      alert("Order status updated");
+      fetchAll();
+    } catch (err) {
+      alert(err.response?.data?.message || "Status update failed");
+    }
   };
 
   return (
@@ -170,8 +184,24 @@ function AdminDashboard() {
             <p className="font-bold">Order ID: {order._id}</p>
             <p>Customer: {order.customer?.name || "Unknown"}</p>
             <p>Total: ₹{order.totalAmount}</p>
-            <p>Status: {order.orderStatus}</p>
             <p>Payment: {order.paymentMethod}</p>
+
+            <div className="mt-3 flex items-center gap-3">
+              <span>Status:</span>
+
+              <select
+                value={order.orderStatus}
+                onChange={(e) => updateOrderStatus(order._id, e.target.value)}
+                className="border p-2 rounded-lg"
+              >
+                <option>Pending</option>
+                <option>Accepted</option>
+                <option>Packed</option>
+                <option>Out for Delivery</option>
+                <option>Delivered</option>
+                <option>Cancelled</option>
+              </select>
+            </div>
           </div>
         ))}
       </section>

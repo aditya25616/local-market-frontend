@@ -10,6 +10,8 @@ import CustomerDashboard from "./pages/Customer/CustomerDashboard";
 import Login from "./pages/Auth/Login";
 import Register from "./pages/Auth/Register";
 import VendorDashboard from "./pages/Vendor/VendorDashboard";
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/customer-dashboard" element={<CustomerDashboard />} />
           <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
           <Route path="*" element={<h1 className="p-6 text-3xl">404 Not Found</h1>} />
         </Routes>
       </main>

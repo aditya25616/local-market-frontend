@@ -13,8 +13,8 @@ import Checkout from "./pages/Checkout/Checkout";
 import CustomerDashboard from "./pages/Customer/CustomerDashboard";
 import VendorDashboard from "./pages/Vendor/VendorDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import Wishlist from "./pages/Wishlist/Wishlist";
 
-import ProtectedRoute from "./routes/ProtectedRoute";
 import RoleBasedRoute from "./routes/RoleBasedRoute";
 
 function App() {
@@ -33,6 +33,15 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route path="/register" element={<Register />} />
+
+          <Route
+            path="/wishlist"
+            element={
+              <RoleBasedRoute allowedRoles={["customer"]}>
+                <Wishlist />
+              </RoleBasedRoute>
+            }
+          />
 
           <Route
             path="/cart"

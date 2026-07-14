@@ -34,9 +34,17 @@ function Navbar() {
           Products
         </Link>
 
-        <Link to="/cart" className="hover:text-green-600">
-          Cart
-        </Link>
+        {user?.role === "customer" && (
+          <>
+            <Link to="/wishlist" className="hover:text-green-600">
+              Wishlist ❤️
+            </Link>
+
+            <Link to="/cart" className="hover:text-green-600">
+              Cart
+            </Link>
+          </>
+        )}
 
         {token ? (
           <>

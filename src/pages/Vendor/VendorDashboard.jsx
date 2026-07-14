@@ -123,14 +123,14 @@ function VendorDashboard() {
 
         <div className="bg-white shadow rounded-xl p-6">
           <h2 className="text-xl font-bold">Orders</h2>
-          <p className="text-4xl mt-3">{orders.length}</p>
+            <p className="text-4xl mt-3">{orders.length}</p>
         </div>
 
         <div className="bg-white shadow rounded-xl p-6">
           <h2 className="text-xl font-bold">Revenue</h2>
-          <p className="text-4xl mt-3">
-            ₹{orders.reduce((sum, order) => sum + order.totalAmount, 0)}
-          </p>
+            <p className="text-4xl mt-3">
+              ₹{orders.reduce((sum, order) => sum + (order.vendorTotal || 0), 0)}
+            </p>
         </div>
       </div>
 
@@ -170,6 +170,38 @@ function VendorDashboard() {
             </button>
           )}
         </form>
+      </div>
+
+      <div className="bg-white shadow rounded-xl p-6 mb-10">
+        <h2 className="text-3xl font-bold mb-6">Recent Orders</h2>
+
+        {orders.length === 0 && <p>No orders yet.</p>}
+
+        {orders.map((order) => (
+          <div key={order._id} className="border-b py-4">
+            <div className="flex justify-between items-center">
+              <div>
+                <div className="font-bold">{order.customer?.name || 'Unknown'}</div>
+                <div className="text-sm text-gray-600">{order.customer?.email}</div>
+              </div>
+              <div className="text-right">
+                <div className="font-semibold">₹{order.vendorTotal}</div>
+                <div className="text-sm text-gray-600">{new Date(order.createdAt).toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <div className="font-semibold">Items:</div>
+              <ul className="list-disc list-inside">
+                {order.orderItems.map((item) => (
+                  <li key={item._id}>
+                    {item.name || item.product?.name} x {item.quantity} - ₹{item.price}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
       </div>
 
       <h2 className="text-3xl font-bold mb-5">My Products</h2>

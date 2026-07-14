@@ -8,7 +8,7 @@ function CustomerDashboard() {
     const token = localStorage.getItem("token");
 
     api
-      .get("/orders/my-orders", {
+      .get("/orders/my", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setOrders(res.data))

@@ -28,6 +28,26 @@ function CustomerDashboard() {
             <p>Total: ₹{order.totalAmount}</p>
             <p>Status: {order.orderStatus}</p>
             <p>Payment: {order.paymentMethod}</p>
+            <div className="mt-3">
+              <div className="font-semibold">Estimated delivery:</div>
+              <div className="text-sm text-gray-600">
+                {order.estimatedDeliveryFrom && order.estimatedDeliveryTo
+                  ? `${new Date(order.estimatedDeliveryFrom).toLocaleDateString()} - ${new Date(order.estimatedDeliveryTo).toLocaleDateString()}`
+                  : "3-5 business days"}
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <div className="font-semibold">Items:</div>
+              <ul className="list-disc list-inside">
+                {order.items?.map((item) => (
+                  <li key={item.product || item._id}>
+                    {item.name || item.product?.name} x {item.quantity} - ₹{item.price}
+                    <div className="text-sm text-gray-600">Vendor: {item.vendor?.name || item.vendorName || 'Unknown'}</div>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         ))
       )}

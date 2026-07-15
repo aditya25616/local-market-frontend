@@ -50,6 +50,18 @@ function VendorDashboard() {
     fetchOrders();
   }, []);
 
+  const handleAcceptOrder = async (orderId) => {
+    try {
+      await api.post(`/vendor/orders/${orderId}/accept`, {}, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      fetchOrders();
+      alert("Order accepted");
+    } catch (err) {
+      alert(err.response?.data?.message || "Accept failed");
+    }
+  };
+
   const handleChange = (e) => {
     if (e.target.name === "image") {
       setForm({ ...form, images: [e.target.value] });
@@ -179,14 +191,33 @@ function VendorDashboard() {
 
         {orders.map((order) => (
           <div key={order._id} className="border-b py-4">
+            <div className="flex justify-end mb-2">
+              {order.orderItems.some((it) => it.itemStatus === "Pending") && (
+                <button
+                  onClick={() => handleAcceptOrder(order._id)}
+                  className="bg-green-600 text-white px-3 py-1 rounded-lg text-sm"
+                >
+                  Accept Pending Items
+                </button>
+              )}
+            </div>
             <div className="flex justify-between items-center">
               <div>
                 <div className="font-bold">{order.customer?.name || 'Unknown'}</div>
                 <div className="text-sm text-gray-600">{order.customer?.email}</div>
+                <div className="text-sm text-gray-600">{order.customer?.phone}</div>
               </div>
               <div className="text-right">
                 <div className="font-semibold">₹{order.vendorTotal}</div>
                 <div className="text-sm text-gray-600">{new Date(order.createdAt).toLocaleString()}</div>
+              </div>
+            </div>
+
+            <div className="mt-3 text-sm text-gray-700">
+              <div className="font-semibold">Delivery Address</div>
+              <div>{order.deliveryAddress?.name} {order.deliveryAddress?.phone}</div>
+              <div>
+                {order.deliveryAddress?.address}, {order.deliveryAddress?.city} {order.deliveryAddress?.pincode}
               </div>
             </div>
 
@@ -195,7 +226,12 @@ function VendorDashboard() {
               <ul className="list-disc list-inside">
                 {order.orderItems.map((item) => (
                   <li key={item._id}>
-                    {item.name || item.product?.name} x {item.quantity} - ₹{item.price}
+                    <div className="flex justify-between">
+                      <div>
+                        {item.name || item.product?.name} x {item.quantity} - ₹{item.price}
+                      </div>
+                      <div className="text-sm text-gray-600">{item.itemStatus || 'Pending'}</div>
+                    </div>
                   </li>
                 ))}
               </ul>
